@@ -1,6 +1,6 @@
 # redux-skeleton
-- Angular client application included abstracted redux flow and oidc-client. You know, a skeleton for you to add some meat.
-- What i used
+1. Angular client application included abstracted redux flow and oidc-client. You know, a skeleton for you to add some meat.
+2. What i used
  - Angular 9.1.7
  - typescript: 3.8.3
  - rxjs: 6.5.4
