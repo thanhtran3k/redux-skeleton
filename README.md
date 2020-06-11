@@ -5,7 +5,7 @@ Angular client application included abstracted redux flow and oidc-client
 For example, i will have a component that can add and read article for my website.
 
 1. Your component will look like this
-
+```
 article
 -->child-article-component
 -->article.state
@@ -14,6 +14,7 @@ article
   -->article.selectors.ts
   -->article.state.ts
 -->article.module.ts
+```
 
 2. article.actions.ts is where you define your action and this is how it looks like
 
