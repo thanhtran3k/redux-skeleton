@@ -1,0 +1,13 @@
+.container {
+    background-image: url(../../../assets/images/background.jpg);
+    background-repeat: no-repeat;
+    background-position: 100%;
+    clear: both;
+    float:left;
+    height:70vh;
+}
+
+#slogan {
+    height:70vh;
+    padding-top: 15%;
+}

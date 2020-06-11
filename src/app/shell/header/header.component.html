@@ -1,0 +1,17 @@
+<header>
+  <div class="navbar navbar-dark bg-light box-shadow">
+    <div class="container d-flex justify-content-between">
+      <a routerLink="/" class="navbar-brand d-flex align-items-center">
+        <img src="../../../assets/images/fuhoCommercLogo.png" style="width:300px;" />
+      </a>
+      <nav class="my-2 my-md-0 mr-md-3">
+        <a class="p-2 text-dark" routerLink="/">About</a>
+        <a class="p-2 text-dark" routerLink="/">Help</a>
+      </nav>
+      <nav *ngIf="isAuthenticated" class="my-2 my-md-0 mr-md-3">
+        <p class="d-inline p-2 text-dark">Hi, {{name}}</p>
+        <a class="d-inline p-2 text-dark" (click)="signout()" href="javascript:void(0)">Signout</a>
+      </nav>
+    </div>
+  </div>
+</header>
