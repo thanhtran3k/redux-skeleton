@@ -143,7 +143,6 @@ providers: [
 ```
 
 ## How can i call it in component.ts and how do i deal with memory leak?
-1. It gonna look like this
 ```typescript
 export class ArticleListComponent extends SafeUnsubscriber implements OnInit {
   article: Article = new Article();
