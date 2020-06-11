@@ -24,6 +24,7 @@ import { BaseSuccessAction, BaseFailedAction } from 'src/shared/model/action.int
 
 export enum ArticleActionNames {
     GET_ALL_ARTICLES = '[ARTICLE] Get all articles',    
+    //And you add more here
     
     ACTION_SUCCESS = '[ARTICLE] Action Success',
     ACTION_FAILED = '[ARTICLE] Action Failed'
