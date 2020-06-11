@@ -192,7 +192,7 @@ export class ArticleListComponent extends SafeUnsubscriber implements OnInit {
 }
 ```
 ## Configurate OIDC Client
-Just find app.config.ts and apply your setting
+1. Just find src/environments/app.config.ts and apply your settings
 
 ```typescript
 export const IDENTITY_CONFIG = {
@@ -200,6 +200,6 @@ export const IDENTITY_CONFIG = {
     IDENTITY_SERVER: 'https://localhost:5000',
     APPLICATION_URL: 'http://localhost:4200',
     RESPONSE_TYPE: 'id_token token',    
-    SCOPE: 'openid profile email api.read api.write'
+    SCOPE: 'openid profile email'
 }
 ```
