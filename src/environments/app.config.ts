@@ -12,7 +12,7 @@ export const IDENTITY_CONFIG = {
     IDENTITY_SERVER: 'https://localhost:5000',
     APPLICATION_URL: 'http://localhost:4200',
     RESPONSE_TYPE: 'id_token token',    
-    SCOPE: 'openid profile email api.read api.write'
+    SCOPE: 'openid profile email'
 }
 
 export const USERINFO_LS = 'userInfo';
