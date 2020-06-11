@@ -182,12 +182,24 @@ export class ArticleListComponent extends SafeUnsubscriber implements OnInit {
 
   ngOnInit() {
   //(1) Hey, i will run first, when component initialize
-    this.getGameDetails();
+    this.getAllArticles();
   }
 
   getAllArticles() {
   //(2) Okay, i will dispatch an action
-    this.dispatcher.fire(new GetGameDetailsAction());
+    this.dispatcher.fire(new GetAllArticlesAction());
   }
+}
+```
+## Configurate OIDC Client
+Just find app.config.ts and apply your setting
+
+```typescript
+export const IDENTITY_CONFIG = {
+    CLIENT_ID: 'fuhocommerce_sellerchannel',
+    IDENTITY_SERVER: 'https://localhost:5000',
+    APPLICATION_URL: 'http://localhost:4200',
+    RESPONSE_TYPE: 'id_token token',    
+    SCOPE: 'openid profile email api.read api.write'
 }
 ```
