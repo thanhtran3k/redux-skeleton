@@ -91,8 +91,8 @@ export class ArticleFailedAction implements Action {
 //init state
 export const initialArticleState: IArticleState = {
     Articles: [],
-    UserArticles: [],
     Article: new Article()
+    //Add more here
 };
 
 export function articleReducer(
@@ -127,12 +127,6 @@ function actionSuccessReducer(
                 ...articleState,
                 Articles: articlesList
             };
-        case ArticleActionNames.GET_ARTICLE_BY_USER:
-            const userArticleList = action.payload as UserArticle[];
-            return {
-                ...articleState,
-                UserArticles: userArticleList
-            }
         case ArticleActionNames.GET_ARTICLE_DETAILS:
             const articleDetail = action.payload as Article;
             return {
@@ -169,11 +163,6 @@ const getArticles = createSelector(
     (state: IArticleState) => state.Articles
 );
 
-const getUserArticles = createSelector(
-    getArticleState,
-    (state: IArticleState) => state.UserArticles
-);
-
 const getArticleDetail = createSelector(
     getArticleState,
     (state: IArticleState) => state.Article
@@ -189,7 +178,6 @@ export class ArticleSelectors extends BaseSelector {
         super(articleActions, ArticleActionNames.ACTION_SUCCESS, ArticleActionNames.ACTION_FAILED);
         
         this.article$ = this.store.select(getArticles);
-        this.userArticle$ = this.store.select(getUserArticles);
         this.articleDetail$ = this.store.select(getArticleDetail);
     }
 }
@@ -199,7 +187,6 @@ export class ArticleSelectors extends BaseSelector {
 ```typescript
 export interface IArticleState {
     Articles: Article[];
-    UserArticles: UserArticle[];
     Article: Article;
 }
 ```
