@@ -17,6 +17,7 @@ article
 -->article.state
   -->article.actions.ts
   -->article.effects.ts
+  -->article.reducer.ts
   -->article.selectors.ts
   -->article.state.ts
 -->article.module.ts
@@ -85,7 +86,76 @@ export class ArticleFailedAction implements Action {
     
 ```
 
-4. article.selectors.ts are pure functions used for obtaining slices of store state.
+4. article.reducer.ts are responsible for handling transitions from one state to the next state in your application. If your action is failed, use the original value, and if you success, use the newer value.
+```typescript
+//init state
+export const initialArticleState: IArticleState = {
+    Articles: [],
+    UserArticles: [],
+    Article: new Article()
+};
+
+export function articleReducer(
+    articleState: IArticleState = initialArticleState,
+    action: ArticleAction
+): IArticleState {
+    switch (action.type) {
+        case ArticleActionNames.ACTION_SUCCESS:
+            return actionSuccessReducer(
+                articleState,
+                action as ArticleSuccessAction
+            );
+        case ArticleActionNames.ACTION_FAILED:
+            return actionFailReducer(
+                articleState,
+                action as ArticleSuccessAction
+            )
+        default:
+            return articleState;
+    };
+}
+
+function actionSuccessReducer(
+    articleState: IArticleState,
+    action: ArticleSuccessAction
+): IArticleState {
+    switch (action.type) {
+        case ArticleActionNames.GET_ALL_ARTICLES:
+            const articlesList = action.payload as Article[];
+            // equivalent to Object.assign({}, payload);
+            return {
+                ...articleState,
+                Articles: articlesList
+            };
+        case ArticleActionNames.GET_ARTICLE_BY_USER:
+            const userArticleList = action.payload as UserArticle[];
+            return {
+                ...articleState,
+                UserArticles: userArticleList
+            }
+        case ArticleActionNames.GET_ARTICLE_DETAILS:
+            const articleDetail = action.payload as Article;
+            return {
+                ...articleState,
+                Article: articleDetail
+            }
+        default:
+            return articleState;
+    }
+}
+
+function actionFailReducer(
+    articleState: IArticleState,
+    action: ArticleFailedAction
+): IArticleState {
+    switch (action.subType) {
+        default:
+            return articleState;
+    }
+}
+```
+
+5. article.selectors.ts are pure functions used for obtaining slices of store state.
 
 ```typescript
 
@@ -125,7 +195,7 @@ export class ArticleSelectors extends BaseSelector {
 }
 ```
 
-5. article.state.ts is just where i save my instances of state
+6. article.state.ts is just where i save my instances of state
 ```typescript
 export interface IArticleState {
     Articles: Article[];
@@ -134,7 +204,7 @@ export interface IArticleState {
 }
 ```
 
-6. Don't forget to import to your module
+7. Don't forget to import to your module
 ```typescript
 imports: [
 EffectsModule.forFeature([ArticleEffects]),
