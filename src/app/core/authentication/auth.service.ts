@@ -33,7 +33,11 @@ export class AuthService extends BaseService {
   }
 
   public getAccessToken() {
-    return this.user.access_token;
+    let token = null;
+    if (this.user) {
+      token = this.user.access_token;
+    }
+    return token;
   }
 
   login() {

@@ -12,7 +12,7 @@ export class AuthorizeInterceptor implements HttpInterceptor {
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const jwt = this.authorize.getAccessToken();
-    if (!!jwt) {
+    if (!jwt) {
      req = req.clone({
        setHeaders: {
          Authorization: `Bearer ${jwt}`
