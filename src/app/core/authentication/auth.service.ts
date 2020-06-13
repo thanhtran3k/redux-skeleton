@@ -41,7 +41,9 @@ export class AuthService extends BaseService {
   }
 
   login() {
-    return this.manager.signinRedirect();
+    if (!this.isAuthenticated()) {
+      this.manager.signinRedirect();
+    }
   }
 
   async completeAuthentication() {

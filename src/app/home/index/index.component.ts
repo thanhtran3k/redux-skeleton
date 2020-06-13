@@ -8,14 +8,12 @@ import { USERINFO_LS } from 'src/environments/app.config';
   styleUrls: ['./index.component.css']
 })
 export class IndexComponent implements OnInit {
-
+  isAuthorized: boolean = false;
   constructor(private authService: AuthService) { }
-
+  
   ngOnInit() {
-    const isAuthorized = this.authService.isAuthenticated();
-    const userLs = localStorage.getItem(`${USERINFO_LS}`);
-    
-    if(isAuthorized && userLs == null) {
+    this.isAuthorized = this.authService.isAuthenticated();    
+    if(this.isAuthorized) {
       this.authService.saveUserInfoToLs();
     }
   }
