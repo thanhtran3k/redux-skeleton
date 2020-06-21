@@ -23,7 +23,15 @@ article
 -->article.module.ts
 ```
 
-2. article.actions.ts is where you define your action and this is how it looks like
+2. article.state.ts is just where i save my instances of state
+```typescript
+export interface IArticleState {
+    Articles: Article[];
+    Article: Article;
+}
+```
+
+3. article.actions.ts is where you define your action and this is how it looks like
 
 ```typescript
 import { Action } from '@ngrx/store';
@@ -65,7 +73,7 @@ export class ArticleFailedAction implements Action {
 
 ```
 
-3. article.effects.ts is where you handle side effect model for Store
+4. article.effects.ts is where you handle side effect model for Store
 ```typescript
 //Just a little code for you to understand
 
@@ -86,7 +94,7 @@ export class ArticleFailedAction implements Action {
     
 ```
 
-4. article.reducer.ts are responsible for handling transitions from one state to the next state in your application. If your action is failed, use the original value, and if you success, use the newer value.
+5. article.reducer.ts are responsible for handling transitions from one state to the next state in your application. If your action is failed, use the original value, and if you success, use the newer value.
 ```typescript
 //init state
 export const initialArticleState: IArticleState = {
@@ -149,7 +157,7 @@ function actionFailReducer(
 }
 ```
 
-5. article.selectors.ts are pure functions used for obtaining slices of store state.
+6. article.selectors.ts are pure functions used for obtaining slices of store state.
 
 ```typescript
 
@@ -180,14 +188,6 @@ export class ArticleSelectors extends BaseSelector {
         this.article$ = this.store.select(getArticles);
         this.articleDetail$ = this.store.select(getArticleDetail);
     }
-}
-```
-
-6. article.state.ts is just where i save my instances of state
-```typescript
-export interface IArticleState {
-    Articles: Article[];
-    Article: Article;
 }
 ```
 
