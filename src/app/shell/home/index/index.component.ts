@@ -9,6 +9,7 @@ import { USERINFO_LS } from 'src/environments/app.config';
 })
 export class IndexComponent implements OnInit {
   isAuthorized: boolean = false;
+
   constructor(private authService: AuthService) { }
   
   ngOnInit() {
