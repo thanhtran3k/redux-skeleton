@@ -32,8 +32,8 @@ import { AuthorizeInterceptor } from './core/authentication/auth.interceptor';
     CoreModule,
     HomeModule,
     AccountModule,
-    AppRoutingModule,
     ShellModule,
+    AppRoutingModule,
     //End
 
     StoreModule.forRoot({}),
