@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/core/authentication/auth.service';
-import { USERINFO_LS } from 'src/environments/app.config';
 import { Router } from '@angular/router';
 
 @Component({
@@ -16,15 +15,11 @@ export class IndexComponent implements OnInit {
     private router: Router
     ) { }
   
-  async ngOnInit() {
+  ngOnInit() {
     this.isAuthenticated = this.authService.isAuthenticated;    
     if(this.isAuthenticated) {
-	  //Go Somewhere
+      this.router.navigate(['product-list']);
     }
-  }
-
-  test() {
-    this.router.navigate(['product-list']);
   }
 
   login() {

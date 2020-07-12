@@ -33,8 +33,7 @@ export class AuthService extends BaseService {
   }
 
   public async getAccessToken() {
-    const userInfo = this.getUserFromLs();
-    const token = userInfo.access_token;
+    const token = this.user.access_token;
     return token;
   }
 
@@ -46,6 +45,7 @@ export class AuthService extends BaseService {
 
   async completeAuthentication() {
     const user = await this.manager.signinRedirectCallback();
+    this.user = user;
     await this.saveUserInfoToLs(user);
     this.isAuthenticated = true;
   }
@@ -60,11 +60,8 @@ export class AuthService extends BaseService {
   }
 
   async getName() {
-    if (this.isAuthenticated) {
-      const userInfo = this.getUserFromLs();
-      const name = userInfo.profile.name ?? null;
-      return name;
-    }
+    const name = this.user.profile.name ?? null;
+    return name;
   }
 
   async signout() {
