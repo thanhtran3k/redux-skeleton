@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { UserManager, User } from 'oidc-client';
-import { BehaviorSubject, Observable, from } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
 import { BaseService } from 'src/app/shared/services/base.service';
 import { USERINFO_LS, IDENTITY_CONFIG } from 'src/environments/app.config';
@@ -11,44 +11,43 @@ import { USERINFO_LS, IDENTITY_CONFIG } from 'src/environments/app.config';
 })
 
 export class AuthService extends BaseService {
-
-  private _authNavStatusSource = new BehaviorSubject<boolean>(false);
-  authNavStatus$ = this._authNavStatusSource.asObservable();
-
   private manager = new UserManager(settings);
   private user: User | null;
+  isAuthenticated = false;
 
   constructor(protected http: HttpClient) {
     super(http);
     this.baseUrl = IDENTITY_CONFIG.IDENTITY_SERVER;
 
-    this.manager.getUser().then(user => {
-      this.user = user;
-      this._authNavStatusSource.next(this.isAuthenticated());
-    });
-  }
-
-  saveUserInfoToLs() {
-    localStorage.setItem(`${USERINFO_LS}`, JSON.stringify(this.user));
-  }
-
-  public getAccessToken() {
-    let token = null;
-    if (this.user) {
-      token = this.user.access_token;
+    const userInfo = this.getUserFromLs();
+    if (userInfo) {
+      const { access_token: accessToken, id_token: idToken,  expires_at: expiresAt } = Object(userInfo)
+      const datetimeNow = Math.floor(Date.now() / 1000);
+      if(accessToken && (expiresAt > datetimeNow)) this.isAuthenticated = true;
+      this.user = userInfo;      
     }
+  }
+
+  async saveUserInfoToLs(user: User) {
+    return localStorage.setItem(`${USERINFO_LS}`, JSON.stringify(user));
+  }
+
+  public async getAccessToken() {
+    const userInfo = this.getUserFromLs();
+    const token = userInfo.access_token;
     return token;
   }
 
-  login() {
-    if (!this.isAuthenticated()) {
+  async login() {
+    if (!this.isAuthenticated) {
       this.manager.signinRedirect();
     }
   }
 
   async completeAuthentication() {
-    this.user = await this.manager.signinRedirectCallback();
-    this._authNavStatusSource.next(this.isAuthenticated());
+    const user = await this.manager.signinRedirectCallback();
+    await this.saveUserInfoToLs(user);
+    this.isAuthenticated = true;
   }
 
   register(registrationInput: any) {
@@ -56,21 +55,27 @@ export class AuthService extends BaseService {
     return this.post<any>(url, registrationInput);
   }
 
-  isAuthenticated(): boolean {
-    return this.user != null && !this.user.expired;
-  }
-
   get authorizationHeaderValue(): string {
     return `${this.user.token_type} ${this.user.access_token}`;
   }
 
-  get name(): string {
-    return this.user != null ? this.user.profile.name : '';
+  async getName() {
+    if (this.isAuthenticated) {
+      const userInfo = this.getUserFromLs();
+      const name = userInfo.profile.name ?? null;
+      return name;
+    }
   }
 
   async signout() {
     localStorage.clear();
     await this.manager.signoutRedirect();
+  }
+
+  getUserFromLs() {
+    const ls = localStorage.getItem('userInfo');
+    const userInfo = JSON.parse(ls);
+    return userInfo;
   }
 }
 

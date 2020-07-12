@@ -7,26 +7,21 @@ import { Subscription } from 'rxjs';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
-export class HeaderComponent implements OnInit, OnDestroy {
+export class HeaderComponent implements OnInit {
 
   name: string;
   isAuthenticated: boolean;
-  subscription:Subscription;
 
   constructor(private authService: AuthService) { }
 
-
-  ngOnInit() {
-    this.subscription = this.authService.authNavStatus$.subscribe(status => this.isAuthenticated = status);
-    this.name = this.authService.name;
+  async ngOnInit() {
+    this.isAuthenticated = this.authService.isAuthenticated;
+    if (this.isAuthenticated) {
+      this.name = await this.authService.getName();
+    }
   } 
 
    async signout() {
     await this.authService.signout();
-  }
-
-  ngOnDestroy() {
-    // prevent memory leak when component is destroyed
-    this.subscription.unsubscribe();
   }
 }
