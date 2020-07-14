@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { UserManager, User } from 'oidc-client';
-import { BehaviorSubject } from 'rxjs';
 
 import { BaseService } from 'src/app/shared/services/base.service';
 import { USERINFO_LS, IDENTITY_CONFIG } from 'src/environments/app.config';
@@ -18,14 +17,6 @@ export class AuthService extends BaseService {
   constructor(protected http: HttpClient) {
     super(http);
     this.baseUrl = IDENTITY_CONFIG.IDENTITY_SERVER;
-
-    const userInfo = this.getUserFromLs();
-    if (userInfo) {
-      const { access_token: accessToken, id_token: idToken,  expires_at: expiresAt } = Object(userInfo)
-      const datetimeNow = Math.floor(Date.now() / 1000);
-      if(accessToken && (expiresAt > datetimeNow)) this.isAuthenticated = true;
-      this.user = userInfo;      
-    }
   }
 
   async saveUserInfoToLs(user: User) {
